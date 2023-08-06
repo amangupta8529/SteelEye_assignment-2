@@ -1,13 +1,31 @@
 function highlightHTMLContent(htmlContent, plainText, plainTextPositions) {
-    plainTextPositions.sort((a, b) => b.start - a.start);
-    for (const position of plainTextPositions) {
-        const startTag = '<mark>';
-        const endTag = '</mark>';
-        const start = htmlContent.indexOf(plainText.substr(position.start, position.end - position.start));
-        const end = start + (position.end - position.start);
-        htmlContent = htmlContent.slice(0, start) + startTag + htmlContent.slice(start, end) + endTag + htmlContent.slice(end);
+    const store = {};
+    for (var i = 0; i < plainTextPositions.length; i++) {
+        store[plainTextPositions[i].start] = 1;
+        store[plainTextPositions[i].end] = -1;
     }
 
+    var counter = 0;
+    for (var i = 0, j = 0; j < htmlContent.length; i++, j++) {
+        if (store[i] === 1) {
+            delete store[i];
+            htmlContent = htmlContent.slice(0, j) + "<mark>" + htmlContent.slice(j);
+        } else if (store[i] === -1) {
+            delete store[i];
+            htmlContent = htmlContent.slice(0, j) + "</mark>" + htmlContent.slice(j);
+        }
+
+        if (htmlContent[j] === "<") counter = 1;
+        else if (htmlContent[j] === ">") counter = -1;
+        else if (counter === -1) {
+            if (plainText[i] === " ") {
+                i++;
+                counter = 0;
+            } else
+                counter = 0;
+        }
+        if (counter !== 0) i--;
+    }
     return htmlContent;
 }
 
