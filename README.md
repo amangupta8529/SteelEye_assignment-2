@@ -11,4 +11,4 @@ The highlightHTMLContent function takes three inputs:
 - Make sure to have Jest installed as a dev dependency in your project:
   npm install jest --save-dev
 - highlightHTMLContent function. Run the test using the following command: npm test 
-The test should pass successfully, indicating that the function is working as expected. Feel free to add more test cases to ensure the robustness of the function.
+- The test should pass successfully, indicating that the function is working as expected. Feel free to add more test cases to ensure the robustness of the function.
